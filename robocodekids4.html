@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Univers des Robots - 5 Mini-Jeux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0e27;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: linear-gradient(125deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+        }
+        
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff, #00f5ff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            letter-spacing: 3px;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #00f5ff;
+            font-size: 1.3em;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: 300;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 245, 255, 0.2);
+            border-radius: 25px;
+            padding: 35px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .game-card:hover::before {
+            left: 100%;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: #00f5ff;
+            box-shadow: 0 20px 60px rgba(0, 245, 255, 0.4),
+                        inset 0 0 30px rgba(0, 245, 255, 0.1);
+        }
+        
+        .game-icon {
+            font-size: 5em;
+            text-align: center;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.6));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .game-card h2 {
+            color: #00f5ff;
+            margin-bottom: 15px;
+            font-size: 2em;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .game-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .play-btn {
+            background: linear-gradient(135deg, #00f5ff 0%, #ff00ff 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 5px 25px rgba(0, 245, 255, 0.4);
+        }
+        
+        .play-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .play-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 40px rgba(255, 0, 255, 0.6);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 31, 58, 0.95) 100%);
+            margin: 50px auto;
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 1000px;
+            position: relative;
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            box-shadow: 0 0 50px rgba(0, 245, 255, 0.3);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3em;
+            cursor: pointer;
+            color: #00f5ff;
+            background: none;
+            border: none;
+            transition: all 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.8);
+        }
+        
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.2);
+            color: #ff00ff;
+        }
+        
+        .modal h2 {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .modal p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        /* Game 1: Robot Emotions */
+        .robot-display {
+            font-size: 150px;
+            text-align: center;
+            margin: 40px 0;
+            min-height: 200px;
+            filter: drop-shadow(0 0 30px rgba(0, 245, 255, 0.6));
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .emotion-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .emotion-btn {
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            background: rgba(0, 245, 255, 0.05);
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+        
+        .emotion-btn:hover {
+            background: rgba(0, 245, 255, 0.2);
+            border-color: #00f5ff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+        
+        .situation-box {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid rgba(255, 0, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 1.3em;
+            color: #ff00ff;
+        }
+        
+        /* Game 2: Musical Robot */
+        .robot-parts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .part {
+            text-align: center;
+            padding: 30px;
+            border: 3px solid rgba(0, 245, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s;
+            background: rgba(0, 245, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .part::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 245, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        
+        .part:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+        
+        .part:hover {
+            border-color: #00f5ff;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+        }
+        
+        .part-icon {
+            font-size: 5em;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(0, 245, 255, 0.6));
+        }
+        
+        .part-label {
+            font-size: 1.4em;
+            color: #00f5ff;
+            font-weight: 700;
+        }
+        
+        .sequence-display {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            min-height: 100px;
+            font-size: 2em;
+            text-align: center;
+            border: 2px solid rgba(0, 245, 255, 0.3);
+            color: #00f5ff;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .control-btn {
+            padding: 15px 35px;
+            border-radius: 25px;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .play-sound {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+        
+        .play-sound:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.6);
+        }
+        
+        .clear {
+            background: linear-gradient(135deg, #ff0055 0%, #cc0044 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 0, 85, 0.4);
+        }
+        
+        .clear:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.6);
+        }
+        
+        /* Game 3: Mirror Robot */
+        .mirror-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .robot-box {
+            border: 3px solid rgba(0, 245, 255, 0.4);
+            border-radius: 25px;
+            padding: 30px;
+            background: rgba(0, 245, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .robot-box h3 {
+            color: #00f5ff;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .arrow-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 250px;
+            margin: 25px auto;
+        }
+        
+        .arrow-btn {
+            padding: 20px;
+            font-size: 2em;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.3) 0%, rgba(255, 0, 255, 0.3) 100%);
+            color: white;
+            border: 2px solid rgba(0, 245, 255, 0.5);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .arrow-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.6) 0%, rgba(255, 0, 255, 0.6) 100%);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 245, 255, 0.6);
+        }
+        
+        .moves-display {
+            font-size: 2.5em;
+            min-height: 80px;
+            margin: 20px 0;
+            text-align: center;
+            color: #ff00ff;
+        }
+        
+        /* Game 4: Story */
+        .story-container {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 30px 0;
+            border: 2px solid rgba(0, 245, 255, 0.2);
+        }
+        
+        .story-text {
+            font-size: 1.4em;
+            line-height: 2;
+            margin-bottom: 35px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .choice-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .choice-btn {
+            padding: 20px 35px;
+            background: linear-gradient(90deg, rgba(0, 245, 255, 0.2) 0%, rgba(255, 0, 255, 0.2) 100%);
+            color: white;
+            border: 2px solid rgba(0, 245, 255, 0.4);
+            border-radius: 15px;
+            font-size: 1.3em;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.4s;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .choice-btn:hover::before {
+            left: 100%;
+        }
+        
+        .choice-btn:hover {
+            transform: translateX(15px);
+            border-color: #00f5ff;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+        }
+        
+        /* Game 5: Bug Workshop */
+        .bug-playground {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            border: 2px solid rgba(255, 0, 255, 0.3);
+        }
+        
+        .bug-robot {
+            font-size: 150px;
+            margin: 40px 0;
+            transition: all 0.5s;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 255, 0.6));
+        }
+        
+        .bug-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .bug-btn {
+            padding: 25px;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff0088 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.4);
+        }
+        
+        .bug-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 35px rgba(255, 0, 255, 0.7);
+        }
+        
+        .bug-status {
+            font-size: 1.4em;
+            margin: 25px 0;
+            min-height: 40px;
+            color: #ff00ff;
+            font-weight: 500;
+        }
+        
+        /* Additional Animations */
+        @keyframes spin3d {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        
+        @keyframes bounce-crazy {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-30px) scale(1.1); }
+            50% { transform: translateY(0) scale(0.9); }
+            75% { transform: translateY(-15px) scale(1.05); }
+        }
+        
+        @keyframes grow-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.8); }
+        }
+        
+        @keyframes shake-intense {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            10% { transform: translateX(-15px) rotate(-5deg); }
+            20% { transform: translateX(15px) rotate(5deg); }
+            30% { transform: translateX(-15px) rotate(-5deg); }
+            40% { transform: translateX(15px) rotate(5deg); }
+            50% { transform: translateX(-10px) rotate(-3deg); }
+            60% { transform: translateX(10px) rotate(3deg); }
+            70% { transform: translateX(-10px) rotate(-3deg); }
+            80% { transform: translateX(10px) rotate(3deg); }
+            90% { transform: translateX(-5px) rotate(-2deg); }
+        }
+        
+        @keyframes rainbow-glow {
+            0% { filter: hue-rotate(0deg) drop-shadow(0 0 30px rgba(255, 0, 255, 0.8)); }
+            25% { filter: hue-rotate(90deg) drop-shadow(0 0 30px rgba(0, 255, 255, 0.8)); }
+            50% { filter: hue-rotate(180deg) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8)); }
+            75% { filter: hue-rotate(270deg) drop-shadow(0 0 30px rgba(0, 255, 0, 0.8)); }
+            100% { filter: hue-rotate(360deg) drop-shadow(0 0 30px rgba(255, 0, 255, 0.8)); }
+        }
+        
+        @keyframes flip-3d {
+            0% { transform: perspective(400px) rotateX(0deg); }
+            50% { transform: perspective(400px) rotateX(180deg); }
+            100% { transform: perspective(400px) rotateX(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <h1>UNIVERS ROBOTS</h1>
+        <div class="subtitle">5 Mini-Jeux Futuristes</div>
+        
+        <div class="games-grid">
+            <div class="game-card" onclick="openGame('game1')">
+                <div class="game-icon">🤖</div>
+                <h2>Émotions</h2>
+                <p>Programme les réactions émotionnelles de ton robot face aux situations</p>
+                <button class="play-btn">Lancer</button>
+            </div>
+            
+            <div class="game-card" onclick="openGame('game2')">
+                <div class="game-icon">🎵</div>
+                <h2>Musical</h2>
+                <p>Compose des mélodies en assemblant les modules sonores de ton robot</p>
+                <button class="play-btn">Lancer</button>
+            </div>
+            
+            <div class="game-card" onclick="openGame('game3')">
+                <div class="game-icon">🪞</div>
+                <h2>Miroir</h2>
+                <p>Synchronise deux robots en créant des séquences inversées</p>
+                <button class="play-btn">Lancer</button>
+            </div>
+            
+            <div class="game-card" onclick="openGame('game4')">
+                <div class="game-icon">📖</div>
+                <h2>Aventure</h2>
+                <p>Explore une planète inconnue et programme ton robot à chaque décision</p>
+                <button class="play-btn">Lancer</button>
+            </div>
+            
+            <div class="game-card" onclick="openGame('game5')">
+                <div class="game-icon">🐛</div>
+                <h2>Bugs</h2>
+                <p>Crée des dysfonctionnements amusants et observe les comportements chaotiques</p>
+                <button class="play-btn">Lancer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Jeu 1 -->
+    <div id="game1" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame('game1')">×</button>
+            <h2>ROBOT ÉMOTIONS</h2>
+            <p>Trouve la bonne émotion avant la fin du temps ! 🎯</p>
+            
+            <div style="display: flex; justify-content: space-around; margin-bottom: 30px;">
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">SCORE</div>
+                    <div id="emotionScore" style="font-size: 3em; color: #ff00ff; font-family: 'Orbitron', sans-serif;">0</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">COMBO</div>
+                    <div id="emotionCombo" style="font-size: 3em; color: #00ff88; font-family: 'Orbitron', sans-serif;">×1</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">TEMPS</div>
+                    <div id="emotionTimer" style="font-size: 3em; color: #ffaa00; font-family: 'Orbitron', sans-serif;">10</div>
+                </div>
+            </div>
+            
+            <div class="robot-display" id="emotionRobot">🤖</div>
+            
+            <div class="situation-box">
+                <strong>SITUATION :</strong><br>
+                <span id="currentSituation">Clique sur DÉMARRER pour commencer !</span>
+            </div>
+            
+            <div class="emotion-buttons">
+                <button class="emotion-btn" onclick="checkEmotion('😊', 'content')" disabled>😊 Content</button>
+                <button class="emotion-btn" onclick="checkEmotion('😢', 'triste')" disabled>😢 Triste</button>
+                <button class="emotion-btn" onclick="checkEmotion('😮', 'surpris')" disabled>😮 Surpris</button>
+                <button class="emotion-btn" onclick="checkEmotion('😡', 'colère')" disabled>😡 Colère</button>
+                <button class="emotion-btn" onclick="checkEmotion('😴', 'fatigué')" disabled>😴 Fatigué</button>
+                <button class="emotion-btn" onclick="checkEmotion('🤔', 'pensif')" disabled>🤔 Pensif</button>
+            </div>
+            
+            <div id="emotionFeedback" style="text-align: center; font-size: 1.8em; min-height: 50px; margin: 20px 0; font-weight: bold;"></div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="play-btn" id="emotionStartBtn" onclick="startEmotionGame()">DÉMARRER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Jeu 2 -->
+    <div id="game2" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame('game2')">×</button>
+            <h2>ROBOT MUSICAL</h2>
+            <p>Mémorise et reproduis la séquence du robot ! 🎼</p>
+            
+            <div style="display: flex; justify-content: space-around; margin-bottom: 30px;">
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">NIVEAU</div>
+                    <div id="musicLevel" style="font-size: 3em; color: #ff00ff; font-family: 'Orbitron', sans-serif;">1</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">LONGUEUR</div>
+                    <div id="musicLength" style="font-size: 3em; color: #00ff88; font-family: 'Orbitron', sans-serif;">3</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">RECORD</div>
+                    <div id="musicRecord" style="font-size: 3em; color: #ffaa00; font-family: 'Orbitron', sans-serif;">0</div>
+                </div>
+            </div>
+            
+            <div id="musicStatus" style="text-align: center; font-size: 1.5em; color: #00f5ff; margin-bottom: 20px; min-height: 40px;">
+                Clique sur DÉMARRER pour commencer !
+            </div>
+            
+            <div class="robot-parts">
+                <div class="part" id="part-head" onclick="playerPlayNote('🎤', 'Do')">
+                    <div class="part-icon">🎤</div>
+                    <div class="part-label">Module Vocal (Do)</div>
+                </div>
+                <div class="part" id="part-body" onclick="playerPlayNote('📦', 'Mi')">
+                    <div class="part-icon">📦</div>
+                    <div class="part-label">Corps Central (Mi)</div>
+                </div>
+                <div class="part" id="part-arm" onclick="playerPlayNote('🦾', 'Sol')">
+                    <div class="part-icon">🦾</div>
+                    <div class="part-label">Bras Mécanique (Sol)</div>
+                </div>
+                <div class="part" id="part-leg" onclick="playerPlayNote('🦿', 'La')">
+                    <div class="part-icon">🦿</div>
+                    <div class="part-label">Jambes Servo (La)</div>
+                </div>
+            </div>
+            
+            <div class="sequence-display" id="musicSequence">● ● ●</div>
+            
+            <div class="control-buttons">
+                <button class="control-btn play-sound" id="musicStartBtn" onclick="startMusicGame()">DÉMARRER</button>
+                <button class="control-btn clear" id="musicReplayBtn" onclick="replaySequence()" style="display: none;">🔊 Réécouter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Jeu 3 -->
+    <div id="game3" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame('game3')">×</button>
+            <h2>ROBOT MIROIR</h2>
+            <p>Programme le robot 1, puis inverse les commandes pour le robot 2</p>
+            
+            <div class="mirror-container">
+                <div class="robot-box">
+                    <h3>🤖 ROBOT ALPHA</h3>
+                    <div class="arrow-buttons">
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(1, '⬆️')">⬆️</button>
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(1, '⬅️')">⬅️</button>
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(1, '➡️')">➡️</button>
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(1, '⬇️')">⬇️</button>
+                        <div></div>
+                    </div>
+                    <div id="robot1Moves" class="moves-display"></div>
+                </div>
+                
+                <div class="robot-box">
+                    <h3>🤖 ROBOT BETA</h3>
+                    <div class="arrow-buttons">
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(2, '⬆️')">⬆️</button>
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(2, '⬅️')">⬅️</button>
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(2, '➡️')">➡️</button>
+                        <div></div>
+                        <button class="arrow-btn" onclick="addMove(2, '⬇️')">⬇️</button>
+                        <div></div>
+                    </div>
+                    <div id="robot2Moves" class="moves-display"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="play-btn" onclick="checkMirror()">Vérifier</button>
+                <button class="control-btn clear" onclick="clearMirror()" style="margin-left: 15px;">Reset</button>
+            </div>
+            <div id="mirrorResult" style="text-align: center; margin-top: 25px; font-size: 1.5em; font-weight: bold;"></div>
+        </div>
+    </div>
+
+    <!-- Modal Jeu 4 -->
+    <div id="game4" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame('game4')">×</button>
+            <h2>L'AVENTURE ROBOTIQUE</h2>
+            
+            <div style="display: flex; justify-content: space-around; margin-bottom: 30px;">
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">POINTS</div>
+                    <div id="storyPoints" style="font-size: 3em; color: #ff00ff; font-family: 'Orbitron', sans-serif;">0</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">OBJETS</div>
+                    <div id="storyItems" style="font-size: 2em; color: #00ff88; font-family: 'Orbitron', sans-serif;">-</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">TEMPS</div>
+                    <div id="storyTimer" style="font-size: 3em; color: #ffaa00; font-family: 'Orbitron', sans-serif;">0s</div>
+                </div>
+            </div>
+            
+            <div class="story-container">
+                <div class="story-text" id="storyText"></div>
+                <div class="choice-buttons" id="storyChoices"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Jeu 5 -->
+    <div id="game5" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame('game5')">×</button>
+            <h2>LABORATOIRE DE RÉPARATION</h2>
+            <p>Diagnostique le bug et répare le robot avant qu'il soit trop tard ! ⚠️</p>
+            
+            <div style="display: flex; justify-content: space-around; margin-bottom: 30px;">
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">SCORE</div>
+                    <div id="repairScore" style="font-size: 3em; color: #ff00ff; font-family: 'Orbitron', sans-serif;">0</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">NIVEAU</div>
+                    <div id="repairLevel" style="font-size: 3em; color: #00ff88; font-family: 'Orbitron', sans-serif;">1</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00f5ff; font-size: 1.2em; margin-bottom: 5px;">TEMPS</div>
+                    <div id="repairTimer" style="font-size: 3em; color: #ffaa00; font-family: 'Orbitron', sans-serif;">15</div>
+                </div>
+            </div>
+            
+            <div class="bug-playground">
+                <div class="bug-robot" id="bugRobot">🤖</div>
+                <div class="bug-status" id="bugStatus">Clique sur DÉMARRER pour commencer !</div>
+                
+                <div class="bug-controls">
+                    <button class="bug-btn" id="fix-spin" onclick="attemptFix('spin')">🔧 Réparer Rotation</button>
+                    <button class="bug-btn" id="fix-bounce" onclick="attemptFix('bounce')">🔧 Réparer Rebond</button>
+                    <button class="bug-btn" id="fix-grow" onclick="attemptFix('grow')">🔧 Réparer Taille</button>
+                    <button class="bug-btn" id="fix-shake" onclick="attemptFix('shake')">🔧 Réparer Vibration</button>
+                    <button class="bug-btn" id="fix-rainbow" onclick="attemptFix('rainbow')">🔧 Réparer Couleur</button>
+                    <button class="bug-btn" id="fix-flip" onclick="attemptFix('flip')">🔧 Réparer Flip</button>
+                </div>
+                
+                <button class="play-btn" id="repairStartBtn" onclick="startRepairGame()" style="margin-top: 30px;">DÉMARRER</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+        
+        // Game 1: Emotions - REAL GAME VERSION
+        const emotionSituations = [
+            {text: "Le robot rencontre un ami qu'il n'a pas vu depuis longtemps", correct: 'content', emoji: '😊'},
+            {text: "Le robot perd ses données importantes", correct: 'triste', emoji: '😢'},
+            {text: "Une météorite s'écrase juste devant le robot", correct: 'surpris', emoji: '😮'},
+            {text: "Un autre robot vole l'invention du robot", correct: 'colère', emoji: '😡'},
+            {text: "Le robot travaille depuis 48 heures sans recharge", correct: 'fatigué', emoji: '😴'},
+            {text: "Le robot doit résoudre une équation complexe", correct: 'pensif', emoji: '🤔'},
+            {text: "Le robot trouve un trésor caché", correct: 'content', emoji: '😊'},
+            {text: "Le robot voit son ami partir en mission lointaine", correct: 'triste', emoji: '😢'},
+            {text: "Un portail dimensionnel s'ouvre devant le robot", correct: 'surpris', emoji: '😮'},
+            {text: "Le robot découvre qu'on l'a saboté", correct: 'colère', emoji: '😡'},
+            {text: "Le robot vient de finir une mission de 72 heures", correct: 'fatigué', emoji: '😴'},
+            {text: "Le robot doit choisir entre deux missions importantes", correct: 'pensif', emoji: '🤔'},
+            {text: "Le robot réussit sa mission impossible", correct: 'content', emoji: '😊'},
+            {text: "Le robot casse son outil préféré", correct: 'triste', emoji: '😢'},
+            {text: "Le robot découvre une nouvelle forme de vie", correct: 'surpris', emoji: '😮'},
+            {text: "Le robot est accusé injustement", correct: 'colère', emoji: '😡'},
+            {text: "Le robot a exploré 10 planètes sans pause", correct: 'fatigué', emoji: '😴'},
+            {text: "Le robot doit décider du futur de la colonie", correct: 'pensif', emoji: '🤔'}
+        ];
+        
+        let emotionScore = 0;
+        let emotionCombo = 1;
+        let emotionTimeLeft = 10;
+        let emotionTimer = null;
+        let currentEmotionSituation = null;
+        let emotionGameRunning = false;
+        let usedSituations = [];
+        
+        function startEmotionGame() {
+            emotionScore = 0;
+            emotionCombo = 1;
+            emotionGameRunning = true;
+            usedSituations = [];
+            document.getElementById('emotionScore').textContent = '0';
+            document.getElementById('emotionCombo').textContent = '×1';
+            document.getElementById('emotionFeedback').textContent = '';
+            document.getElementById('emotionStartBtn').style.display = 'none';
+            
+            // Enable buttons
+            document.querySelectorAll('.emotion-btn').forEach(btn => btn.disabled = false);
+            
+            nextEmotionSituation();
+        }
+        
+        function nextEmotionSituation() {
+            if (!emotionGameRunning) return;
+            
+            // Reset timer
+            emotionTimeLeft = 10;
+            document.getElementById('emotionTimer').textContent = emotionTimeLeft;
+            
+            // Get random situation not yet used
+            let availableSituations = emotionSituations.filter((_, index) => !usedSituations.includes(index));
+            
+            if (availableSituations.length === 0) {
+                // All situations used - game won!
+                endEmotionGame(true);
+                return;
+            }
+            
+            let randomIndex = Math.floor(Math.random() * availableSituations.length);
+            let situationIndex = emotionSituations.indexOf(availableSituations[randomIndex]);
+            usedSituations.push(situationIndex);
+            
+            currentEmotionSituation = emotionSituations[situationIndex];
+            document.getElementById('currentSituation').textContent = currentEmotionSituation.text;
+            document.getElementById('emotionRobot').innerHTML = '🤖';
+            document.getElementById('emotionFeedback').textContent = '';
+            
+            // Start countdown
+            if (emotionTimer) clearInterval(emotionTimer);
+            emotionTimer = setInterval(() => {
+                emotionTimeLeft--;
+                document.getElementById('emotionTimer').textContent = emotionTimeLeft;
+                
+                if (emotionTimeLeft <= 0) {
+                    clearInterval(emotionTimer);
+                    wrongAnswer();
+                }
+            }, 1000);
+        }
+        
+        function checkEmotion(emoji, emotion) {
+            if (!emotionGameRunning || !currentEmotionSituation) return;
+            
+            clearInterval(emotionTimer);
+            
+            if (emotion === currentEmotionSituation.correct) {
+                // CORRECT!
+                correctAnswer(emoji);
+            } else {
+                // WRONG!
+                wrongAnswer();
+            }
+        }
+        
+        function correctAnswer(emoji) {
+            const robot = document.getElementById('emotionRobot');
+            const feedback = document.getElementById('emotionFeedback');
+            
+            robot.innerHTML = `<div style="font-size: 1em;">${emoji}</div>`;
+            feedback.innerHTML = '✅ CORRECT !';
+            feedback.style.color = '#00ff88';
+            
+            // Calculate points (faster = more points)
+            let basePoints = 100;
+            let timeBonus = emotionTimeLeft * 10;
+            let comboBonus = (emotionCombo - 1) * 50;
+            let totalPoints = (basePoints + timeBonus) * emotionCombo + comboBonus;
+            
+            emotionScore += totalPoints;
+            emotionCombo++;
+            
+            document.getElementById('emotionScore').textContent = emotionScore;
+            document.getElementById('emotionCombo').textContent = '×' + emotionCombo;
+            
+            // Next situation after short delay
+            setTimeout(() => {
+                nextEmotionSituation();
+            }, 1500);
+        }
+        
+        function wrongAnswer() {
+            const robot = document.getElementById('emotionRobot');
+            const feedback = document.getElementById('emotionFeedback');
+            
+            robot.innerHTML = `<div style="font-size: 1em;">❌</div>`;
+            feedback.innerHTML = `❌ ERREUR ! C'était : ${currentEmotionSituation.emoji} ${currentEmotionSituation.correct.toUpperCase()}`;
+            feedback.style.color = '#ff0055';
+            
+            // Reset combo
+            emotionCombo = 1;
+            document.getElementById('emotionCombo').textContent = '×1';
+            
+            // Lose points
+            emotionScore = Math.max(0, emotionScore - 50);
+            document.getElementById('emotionScore').textContent = emotionScore;
+            
+            // Continue or end
+            setTimeout(() => {
+                if (usedSituations.length >= 10) {
+                    endEmotionGame(false);
+                } else {
+                    nextEmotionSituation();
+                }
+            }, 2500);
+        }
+        
+        function endEmotionGame(won) {
+            emotionGameRunning = false;
+            clearInterval(emotionTimer);
+            
+            const feedback = document.getElementById('emotionFeedback');
+            const robot = document.getElementById('emotionRobot');
+            
+            document.querySelectorAll('.emotion-btn').forEach(btn => btn.disabled = true);
+            
+            if (won) {
+                robot.innerHTML = '🏆';
+                feedback.innerHTML = `🎉 PARFAIT ! Score final: ${emotionScore} points !`;
+                feedback.style.color = '#00f5ff';
+                document.getElementById('currentSituation').textContent = 'Tu as terminé toutes les situations !';
+            } else {
+                robot.innerHTML = '🎮';
+                feedback.innerHTML = `Partie terminée ! Score: ${emotionScore} points`;
+                feedback.style.color = '#ff00ff';
+                document.getElementById('currentSituation').textContent = 'Essaie encore pour battre ton score !';
+            }
+            
+            document.getElementById('emotionStartBtn').style.display = 'block';
+            document.getElementById('emotionStartBtn').textContent = 'REJOUER';
+        }
+        
+        function setEmotion(emoji, emotion) {
+            // Deprecated - keeping for compatibility
+        }
+        
+        function nextSituation() {
+            // Deprecated - keeping for compatibility
+        }
+        
+        // Game 2: Musical - SIMON SAYS VERSION
+        const notes = {
+            'Do': {freq: 261.63, emoji: '🎤', id: 'part-head'},
+            'Mi': {freq: 329.63, emoji: '📦', id: 'part-body'},
+            'Sol': {freq: 392.00, emoji: '🦾', id: 'part-arm'},
+            'La': {freq: 440.00, emoji: '🦿', id: 'part-leg'}
+        };
+        
+        let musicSequence = [];
+        let playerSequence = [];
+        let musicLevel = 1;
+        let musicGameActive = false;
+        let isPlayingSequence = false;
+        let musicRecord = 0;
+        
+        function startMusicGame() {
+            musicLevel = 1;
+            musicSequence = [];
+            playerSequence = [];
+            musicGameActive = true;
+            
+            document.getElementById('musicLevel').textContent = musicLevel;
+            document.getElementById('musicStartBtn').style.display = 'none';
+            document.getElementById('musicReplayBtn').style.display = 'inline-block';
+            
+            nextLevel();
+        }
+        
+        function nextLevel() {
+            playerSequence = [];
+            
+            // Add one more note to sequence
+            const noteNames = Object.keys(notes);
+            const randomNote = noteNames[Math.floor(Math.random() * noteNames.length)];
+            musicSequence.push(randomNote);
+            
+            document.getElementById('musicLevel').textContent = musicLevel;
+            document.getElementById('musicLength').textContent = musicSequence.length;
+            document.getElementById('musicStatus').textContent = '🎵 Écoute bien la séquence...';
+            document.getElementById('musicStatus').style.color = '#00f5ff';
+            
+            // Disable parts during playback
+            disableParts(true);
+            
+            // Play sequence after short delay
+            setTimeout(() => {
+                playSequence();
+            }, 1000);
+        }
+        
+        async function playSequence() {
+            isPlayingSequence = true;
+            updateSequenceDisplay();
+            
+            for (let i = 0; i < musicSequence.length; i++) {
+                const noteName = musicSequence[i];
+                await playNoteWithAnimation(noteName, i);
+                await sleep(400); // Pause between notes
+            }
+            
+            isPlayingSequence = false;
+            
+            // IMPORTANT: Update display to hide the emojis now!
+            updateSequenceDisplay();
+            
+            document.getElementById('musicStatus').textContent = '🎮 À toi de jouer ! Reproduis la séquence';
+            document.getElementById('musicStatus').style.color = '#00ff88';
+            
+            // Enable parts for player
+            disableParts(false);
+        }
+        
+        async function playNoteWithAnimation(noteName, index) {
+            const note = notes[noteName];
+            const partElement = document.getElementById(note.id);
+            
+            // Visual feedback
+            partElement.style.transform = 'scale(1.2)';
+            partElement.style.boxShadow = '0 0 40px rgba(0, 245, 255, 0.9)';
+            partElement.style.borderColor = '#00f5ff';
+            
+            // Update display to show current note
+            updateSequenceDisplay(index);
+            
+            // Play sound
+            playSound(note.freq, 0.3);
+            
+            await sleep(400);
+            
+            // Reset visual
+            partElement.style.transform = '';
+            partElement.style.boxShadow = '';
+            partElement.style.borderColor = 'rgba(0, 245, 255, 0.3)';
+        }
+        
+        function playerPlayNote(emoji, noteName) {
+            if (!musicGameActive || isPlayingSequence) return;
+            
+            const note = notes[noteName];
+            const partElement = document.getElementById(note.id);
+            
+            // Add to player sequence
+            playerSequence.push(noteName);
+            
+            // Check if correct
+            const currentIndex = playerSequence.length - 1;
+            
+            if (playerSequence[currentIndex] !== musicSequence[currentIndex]) {
+                // WRONG!
+                partElement.style.transform = 'scale(1.15)';
+                partElement.style.boxShadow = '0 0 40px rgba(255, 0, 0, 0.9)';
+                partElement.style.borderColor = '#ff0000';
+                partElement.style.background = 'rgba(255, 0, 0, 0.3)';
+                
+                // Play error sound
+                playSound(100, 0.3);
+                
+                setTimeout(() => {
+                    partElement.style.transform = '';
+                    partElement.style.boxShadow = '';
+                    partElement.style.borderColor = '';
+                    partElement.style.background = '';
+                }, 300);
+                
+                gameOver();
+            } else {
+                // CORRECT!
+                partElement.style.transform = 'scale(1.15)';
+                partElement.style.boxShadow = '0 0 40px rgba(0, 255, 136, 0.9)';
+                partElement.style.borderColor = '#00ff88';
+                partElement.style.background = 'rgba(0, 255, 136, 0.2)';
+                
+                // Play correct sound
+                playSound(note.freq, 0.2);
+                
+                // Show checkmark on the sequence
+                updateSequenceDisplay(currentIndex);
+                
+                setTimeout(() => {
+                    partElement.style.transform = '';
+                    partElement.style.boxShadow = '';
+                    partElement.style.borderColor = 'rgba(0, 245, 255, 0.3)';
+                    partElement.style.background = '';
+                }, 200);
+                
+                if (playerSequence.length === musicSequence.length) {
+                    // COMPLETE LEVEL!
+                    levelComplete();
+                }
+            }
+        }
+        
+        function levelComplete() {
+            disableParts(true);
+            
+            document.getElementById('musicStatus').textContent = '✅ PARFAIT ! Niveau suivant...';
+            document.getElementById('musicStatus').style.color = '#00ff88';
+            
+            musicLevel++;
+            
+            // Update record
+            if (musicSequence.length > musicRecord) {
+                musicRecord = musicSequence.length;
+                document.getElementById('musicRecord').textContent = musicRecord;
+            }
+            
+            setTimeout(() => {
+                nextLevel();
+            }, 2000);
+        }
+        
+        function gameOver() {
+            musicGameActive = false;
+            disableParts(true);
+            
+            document.getElementById('musicStatus').innerHTML = `❌ ERREUR ! Tu es arrivé au niveau ${musicLevel}<br>Séquence de ${musicSequence.length} notes !`;
+            document.getElementById('musicStatus').style.color = '#ff0055';
+            
+            // Play error sound
+            playSound(100, 0.5);
+            
+            // Show replay button
+            document.getElementById('musicStartBtn').style.display = 'inline-block';
+            document.getElementById('musicStartBtn').textContent = 'REJOUER';
+            document.getElementById('musicReplayBtn').style.display = 'none';
+            
+            // Update record
+            if (musicSequence.length > musicRecord) {
+                musicRecord = musicSequence.length;
+                document.getElementById('musicRecord').textContent = musicRecord;
+            }
+            
+            updateSequenceDisplay();
+        }
+        
+        function replaySequence() {
+            if (!musicGameActive || isPlayingSequence) return;
+            
+            playerSequence = [];
+            document.getElementById('musicStatus').textContent = '🔊 Réécoute de la séquence...';
+            document.getElementById('musicStatus').style.color = '#00f5ff';
+            
+            disableParts(true);
+            
+            setTimeout(() => {
+                playSequence();
+            }, 500);
+        }
+        
+        function updateSequenceDisplay(highlightIndex = -1) {
+            const display = document.getElementById('musicSequence');
+            
+            if (musicSequence.length === 0) {
+                display.textContent = '● ● ●';
+                return;
+            }
+            
+            let html = '';
+            
+            // If robot is playing, show the sequence with current highlight
+            if (isPlayingSequence) {
+                for (let i = 0; i < musicSequence.length; i++) {
+                    const note = notes[musicSequence[i]];
+                    const isCurrent = i === highlightIndex;
+                    
+                    let color = 'rgba(255,255,255,0.5)';
+                    let size = '1em';
+                    
+                    if (isCurrent) {
+                        color = '#00f5ff';
+                        size = '1.5em';
+                    } else if (i < highlightIndex) {
+                        color = 'rgba(255,255,255,0.7)';
+                    }
+                    
+                    html += `<span style="color: ${color}; font-size: ${size}; margin: 0 8px; transition: all 0.3s; display: inline-block;">${note.emoji}</span>`;
+                }
+            } else {
+                // Player's turn - show only progress dots, NOT the actual notes!
+                for (let i = 0; i < musicSequence.length; i++) {
+                    const isPlayed = i < playerSequence.length;
+                    const isCorrectlyPlayed = isPlayed && playerSequence[i] === musicSequence[i];
+                    
+                    let symbol = '●';
+                    let color = 'rgba(255,255,255,0.3)';
+                    let size = '1.2em';
+                    
+                    if (isCorrectlyPlayed) {
+                        symbol = '✅';
+                        color = '#00ff88';
+                        size = '1em';
+                    } else if (isPlayed) {
+                        // Wrong answer
+                        symbol = '❌';
+                        color = '#ff0055';
+                    }
+                    
+                    html += `<span style="color: ${color}; font-size: ${size}; margin: 0 8px; transition: all 0.3s; display: inline-block;">${symbol}</span>`;
+                }
+            }
+            
+            display.innerHTML = html;
+        }
+        
+        function disableParts(disabled) {
+            const parts = document.querySelectorAll('.part');
+            parts.forEach(part => {
+                if (disabled) {
+                    part.style.opacity = '0.5';
+                    part.style.pointerEvents = 'none';
+                } else {
+                    part.style.opacity = '1';
+                    part.style.pointerEvents = 'auto';
+                }
+            });
+        }
+        
+        function playSound(frequency, duration) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        // Deprecated functions - keeping for compatibility
+        function addNote(emoji, note) {}
+        function playMelody() {}
+        function clearMelody() {}
+        
+        // Game 3: Mirror
+        let robot1Sequence = [];
+        let robot2Sequence = [];
+        
+        function addMove(robotNum, arrow) {
+            if (robotNum === 1) {
+                robot1Sequence.push(arrow);
+                document.getElementById('robot1Moves').textContent = robot1Sequence.join(' ');
+            } else {
+                robot2Sequence.push(arrow);
+                document.getElementById('robot2Moves').textContent = robot2Sequence.join(' ');
+            }
+        }
+        
+        function checkMirror() {
+            if (robot1Sequence.length === 0) {
+                document.getElementById('mirrorResult').innerHTML = '⚠️ Programme ALPHA d\'abord !';
+                document.getElementById('mirrorResult').style.color = '#ff00ff';
+                return;
+            }
+            
+            const mirrorMap = {'⬆️': '⬇️', '⬇️': '⬆️', '⬅️': '➡️', '➡️': '⬅️'};
+            const correctMirror = robot1Sequence.map(arrow => mirrorMap[arrow]);
+            
+            if (JSON.stringify(robot2Sequence) === JSON.stringify(correctMirror)) {
+                document.getElementById('mirrorResult').innerHTML = '✅ SYNCHRONISATION PARFAITE !';
+                document.getElementById('mirrorResult').style.color = '#00ff88';
+            } else {
+                document.getElementById('mirrorResult').innerHTML = '❌ ERREUR DE SYNCHRONISATION - Inverse chaque direction';
+                document.getElementById('mirrorResult').style.color = '#ff0055';
+            }
+        }
+        
+        function clearMirror() {
+            robot1Sequence = [];
+            robot2Sequence = [];
+            document.getElementById('robot1Moves').textContent = '';
+            document.getElementById('robot2Moves').textContent = '';
+            document.getElementById('mirrorResult').textContent = '';
+        }
+        
+        // Game 4: Story - WITH SCORING SYSTEM
+        const story = {
+            start: {
+                text: "🤖 MISSION ALPHA : Tu es un robot explorateur sur la planète Zeta-9. Une grotte mystérieuse se dresse devant toi, émettant une lueur étrange. Tes capteurs détectent une activité inhabituelle. Quelle est ta décision ?",
+                choices: [
+                    {text: "🔦 ACTIVER SCANNER COMPLET - Analyser la grotte en détail", next: 'scan', points: 150, speed: 'smart'},
+                    {text: "🚀 PROPULSEUR BOOST - Survoler la grotte", next: 'jump', points: 100, speed: 'risky'},
+                    {text: "📡 TRANSMISSION BASE - Demander des instructions", next: 'message', points: 120, speed: 'safe'}
+                ]
+            },
+            scan: {
+                text: "🔍 SCAN TERMINÉ : Tes capteurs révèlent des cristaux énergétiques de classe A ! Ces ressources sont extrêmement rares. Tu pénètres dans la grotte et découvres une chambre lumineuse remplie de formations cristallines. Protocole suivant ?",
+                choices: [
+                    {text: "💎 EXTRACTION MINIÈRE - Collecter les cristaux", next: 'collect', points: 200, item: '💎', speed: 'efficient'},
+                    {text: "📸 DOCUMENTATION VISUELLE - Archives photos", next: 'photo', points: 180, item: '📸', speed: 'scientific'},
+                    {text: "🔙 ABANDON MISSION - Explorer un autre secteur", next: 'start', points: -50, speed: 'cautious'}
+                ]
+            },
+            jump: {
+                text: "⚡ ALERTE ÉNERGIE : Le propulseur a consommé 70% de ta batterie ! Tu atterris en sécurité mais tes systèmes signalent un niveau critique. Une station de recharge solaire apparaît à proximité. Action immédiate ?",
+                choices: [
+                    {text: "☀️ RECHARGE TOTALE - Restauration complète (20 min)", next: 'recharge', points: 100, speed: 'patient'},
+                    {text: "⚡ RECHARGE EXPRESS - Mode rapide (5 min)", next: 'quickcharge', points: 140, speed: 'efficient'},
+                    {text: "🔋 MODE ÉCONOMIE - Continuer avec batterie actuelle", next: 'save', points: 160, item: '⚡', speed: 'bold'}
+                ]
+            },
+            message: {
+                text: "📡 RÉPONSE BASE CENTRALE : Signal d'urgence détecté ! Des formes de vie inconnues ont été repérées dans ton secteur. La base te demande d'investiguer avec précaution. Tes capteurs s'activent automatiquement. Procédure ?",
+                choices: [
+                    {text: "🔍 MODE PISTAGE - Suivre les signaux biologiques", next: 'signals', points: 170, speed: 'brave'},
+                    {text: "🛡️ BOUCLIER DÉFENSIF - Activer protection maximale", next: 'defense', points: 130, item: '🛡️', speed: 'cautious'},
+                    {text: "🏃 ÉVACUATION TACTIQUE - Changer de zone", next: 'start', points: -30, speed: 'safe'}
+                ]
+            },
+            collect: {
+                text: "✨ MISSION ACCOMPLIE ! Tu as collecté 47 cristaux énergétiques de haute qualité. La base centrale est impressionnée par ta découverte. Ces ressources permettront d'alimenter toute la colonie pendant des mois !",
+                choices: [{text: "🔄 NOUVELLE MISSION", next: 'end', points: 300, final: true}]
+            },
+            photo: {
+                text: "📸 DOCUMENTATION RÉUSSIE ! Tes captures haute définition révèlent des structures jamais observées. Les scientifiques de la base sont enthousiastes. Tu reçois la MÉDAILLE D'OR DE LA DÉCOUVERTE !",
+                choices: [{text: "🔄 NOUVELLE MISSION", next: 'end', points: 250, final: true}]
+            },
+            recharge: {
+                text: "🔋 SYSTÈMES À 100% ! Tous tes circuits sont optimisés. Tes capacités sont maintenant supérieures au niveau standard. Tu es prêt pour n'importe quelle mission !",
+                choices: [{text: "🔄 CONTINUER", next: 'end', points: 150, final: true}]
+            },
+            quickcharge: {
+                text: "⚡ RECHARGE EXPRESS TERMINÉE ! En explorant pendant la charge, tu découvres une cascade de photons bioluminescents, un phénomène extrêmement rare !",
+                choices: [{text: "🔄 CONTINUER", next: 'end', points: 220, item: '🌟', final: true}]
+            },
+            save: {
+                text: "💡 DÉCISION STRATÉGIQUE ! En économisant ton énergie, tu découvres un passage secret qui te mène directement à un dépôt de carburant abandonné. Efficacité optimale !",
+                choices: [{text: "🔄 CONTINUER", next: 'end', points: 280, item: '🔋', final: true}]
+            },
+            signals: {
+                text: "👽 RENCONTRE EXTRAORDINAIRE ! Tu découvres une colonie de robots bienveillants d'une civilisation ancienne. Ils partagent leurs connaissances technologiques avec toi !",
+                choices: [{text: "🔄 CONTINUER", next: 'end', points: 350, item: '📜', final: true}]
+            },
+            defense: {
+                text: "🛡️ FAUSSE ALERTE ! Les 'formes de vie' étaient en réalité des papillons énergétiques, des créatures magnifiques et inoffensives qui dansent dans l'air en émettant de la lumière !",
+                choices: [{text: "🔄 CONTINUER", next: 'end', points: 200, final: true}]
+            }
+        };
+        
+        let currentStory = 'start';
+        let storyPoints = 0;
+        let storyItems = [];
+        let storyStartTime = 0;
+        let storyTimer = null;
+        let decisionStartTime = 0;
+        
+        function displayStory() {
+            const storyData = story[currentStory];
+            document.getElementById('storyText').textContent = storyData.text;
+            
+            const choicesDiv = document.getElementById('storyChoices');
+            choicesDiv.innerHTML = '';
+            
+            // Start timer for this decision
+            decisionStartTime = Date.now();
+            
+            storyData.choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice.text;
+                btn.onclick = () => {
+                    makeChoice(choice);
+                };
+                choicesDiv.appendChild(btn);
+            });
+        }
+        
+        function makeChoice(choice) {
+            // Calculate time bonus (faster = more points)
+            const decisionTime = (Date.now() - decisionStartTime) / 1000;
+            let timeBonus = 0;
+            
+            if (decisionTime < 5) timeBonus = 50;
+            else if (decisionTime < 10) timeBonus = 30;
+            else if (decisionTime < 15) timeBonus = 10;
+            
+            // Add points
+            const totalPoints = choice.points + timeBonus;
+            storyPoints += totalPoints;
+            document.getElementById('storyPoints').textContent = storyPoints;
+            
+            // Show point gain feedback
+            showPointGain(totalPoints, timeBonus);
+            
+            // Collect item if any
+            if (choice.item) {
+                storyItems.push(choice.item);
+                updateItemsDisplay();
+            }
+            
+            // Check if final choice
+            if (choice.final) {
+                endStory();
+                return;
+            }
+            
+            // Go to next story part
+            currentStory = choice.next;
+            
+            setTimeout(() => {
+                displayStory();
+            }, 1500);
+        }
+        
+        function showPointGain(points, timeBonus) {
+            const feedback = document.createElement('div');
+            feedback.style.position = 'fixed';
+            feedback.style.top = '50%';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translate(-50%, -50%)';
+            feedback.style.fontSize = '3em';
+            feedback.style.fontWeight = 'bold';
+            feedback.style.color = points > 0 ? '#00ff88' : '#ff0055';
+            feedback.style.zIndex = '3000';
+            feedback.style.textShadow = '0 0 20px currentColor';
+            feedback.style.animation = 'float 1.5s ease-out';
+            feedback.textContent = (points > 0 ? '+' : '') + points + (timeBonus > 0 ? ' (⚡+' + timeBonus + ')' : '');
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 1500);
+        }
+        
+        function updateItemsDisplay() {
+            const display = document.getElementById('storyItems');
+            if (storyItems.length === 0) {
+                display.textContent = '-';
+            } else {
+                display.textContent = storyItems.join(' ');
+            }
+        }
+        
+        function updateStoryTimer() {
+            const elapsed = Math.floor((Date.now() - storyStartTime) / 1000);
+            document.getElementById('storyTimer').textContent = elapsed + 's';
+        }
+        
+        function startStoryGame() {
+            currentStory = 'start';
+            storyPoints = 0;
+            storyItems = [];
+            storyStartTime = Date.now();
+            
+            document.getElementById('storyPoints').textContent = '0';
+            document.getElementById('storyItems').textContent = '-';
+            document.getElementById('storyTimer').textContent = '0s';
+            
+            if (storyTimer) clearInterval(storyTimer);
+            storyTimer = setInterval(updateStoryTimer, 1000);
+            
+            displayStory();
+        }
+        
+        function endStory() {
+            clearInterval(storyTimer);
+            
+            const finalTime = Math.floor((Date.now() - storyStartTime) / 1000);
+            const itemBonus = storyItems.length * 100;
+            const finalScore = storyPoints + itemBonus;
+            
+            let rank = '';
+            let emoji = '';
+            
+            if (finalScore >= 800) {
+                rank = 'LÉGENDE ROBOTIQUE';
+                emoji = '🏆';
+            } else if (finalScore >= 600) {
+                rank = 'EXPERT EN MISSION';
+                emoji = '⭐';
+            } else if (finalScore >= 400) {
+                rank = 'EXPLORATEUR COMPÉTENT';
+                emoji = '🎖️';
+            } else if (finalScore >= 200) {
+                rank = 'ROBOT DÉBUTANT';
+                emoji = '🎯';
+            } else {
+                rank = 'MISSION DIFFICILE';
+                emoji = '💪';
+            }
+            
+            document.getElementById('storyText').innerHTML = `
+                ${emoji} <strong>${rank}</strong> ${emoji}<br><br>
+                📊 SCORE FINAL : ${finalScore} points<br>
+                ⏱️ TEMPS : ${finalTime} secondes<br>
+                💎 OBJETS COLLECTÉS : ${storyItems.length}<br>
+                ${itemBonus > 0 ? '🎁 BONUS OBJETS : +' + itemBonus + ' points<br>' : ''}<br>
+                ${finalScore >= 600 ? '🎉 FÉLICITATIONS ! Performance exceptionnelle !' : 'Rejoue pour améliorer ton score !'}
+            `;
+            
+            const choicesDiv = document.getElementById('storyChoices');
+            choicesDiv.innerHTML = '';
+            
+            const replayBtn = document.createElement('button');
+            replayBtn.className = 'choice-btn';
+            replayBtn.textContent = '🔄 REJOUER POUR BATTRE TON SCORE';
+            replayBtn.onclick = startStoryGame;
+            choicesDiv.appendChild(replayBtn);
+        }
+        
+        // Game 5: Repair Lab - DIAGNOSTIC GAME
+        const bugTypes = {
+            spin: {name: 'Rotation Infinie', animation: 'spin3d 2s linear infinite', description: '🌀 Le robot tourne sans arrêt !'},
+            bounce: {name: 'Mode Rebond', animation: 'bounce-crazy 0.6s infinite', description: '⚡ Le robot rebondit partout !'},
+            grow: {name: 'Oscillation Taille', animation: 'grow-pulse 1.5s infinite', description: '📈 Le robot change de taille !'},
+            shake: {name: 'Vibration Intense', animation: 'shake-intense 0.4s infinite', description: '💥 Le robot vibre intensément !'},
+            rainbow: {name: 'Spectre Chromatique', animation: 'rainbow-glow 2s infinite', description: '🌈 Le robot change de couleur !'},
+            flip: {name: 'Flip 3D', animation: 'flip-3d 1.5s infinite', description: '🔄 Le robot se retourne sans cesse !'}
+        };
+        
+        let repairScore = 0;
+        let repairLevel = 1;
+        let repairTimeLeft = 15;
+        let repairTimer = null;
+        let currentBugs = [];
+        let repairGameActive = false;
+        let usedBugs = [];
+        
+        function startRepairGame() {
+            repairScore = 0;
+            repairLevel = 1;
+            usedBugs = [];
+            repairGameActive = true;
+            
+            document.getElementById('repairScore').textContent = '0';
+            document.getElementById('repairLevel').textContent = '1';
+            document.getElementById('repairStartBtn').style.display = 'none';
+            
+            enableRepairButtons(true);
+            nextBug();
+        }
+        
+        function nextBug() {
+            if (!repairGameActive) return;
+            
+            // Check if game is complete (6 levels done)
+            if (repairLevel > 6) {
+                endRepairGame();
+                return;
+            }
+            
+            // Reset robot
+            const robot = document.getElementById('bugRobot');
+            robot.style.animation = '';
+            robot.style.transform = '';
+            robot.style.filter = '';
+            
+            // Determine number of bugs based on level
+            let numBugs = 1;
+            if (repairLevel >= 4 && repairLevel <= 5) numBugs = 2;
+            if (repairLevel === 6) numBugs = 3;
+            
+            // Time decreases with level
+            const timeMap = {1: 20, 2: 18, 3: 16, 4: 25, 5: 22, 6: 30};
+            repairTimeLeft = timeMap[repairLevel];
+            document.getElementById('repairTimer').textContent = repairTimeLeft;
+            
+            // Pick random bugs (not yet used)
+            const availableBugs = Object.keys(bugTypes).filter(b => !usedBugs.includes(b));
+            
+            if (availableBugs.length < numBugs) {
+                // Not enough bugs left for this level
+                endRepairGame();
+                return;
+            }
+            
+            currentBugs = [];
+            for (let i = 0; i < numBugs; i++) {
+                const randomIndex = Math.floor(Math.random() * availableBugs.length);
+                const selectedBug = availableBugs.splice(randomIndex, 1)[0];
+                currentBugs.push(selectedBug);
+                usedBugs.push(selectedBug);
+            }
+            
+            // Apply bug animations (combine them)
+            setTimeout(() => {
+                const combinedAnimation = currentBugs.map(b => bugTypes[b].animation).join(', ');
+                robot.style.animation = combinedAnimation;
+            }, 10);
+            
+            // Update status
+            let statusText = `⚠️ <strong>ALERTE NIVEAU ${repairLevel}</strong><br>`;
+            if (numBugs === 1) {
+                statusText += bugTypes[currentBugs[0]].description;
+            } else {
+                statusText += `<strong>${numBugs} BUGS DÉTECTÉS !</strong><br>`;
+                currentBugs.forEach(bug => {
+                    statusText += `${bugTypes[bug].description}<br>`;
+                });
+                statusText += `<br>🎯 Répare-les TOUS pour continuer !`;
+            }
+            
+            document.getElementById('bugStatus').innerHTML = statusText;
+            document.getElementById('bugStatus').style.color = '#ff0055';
+            
+            // Start countdown
+            if (repairTimer) clearInterval(repairTimer);
+            repairTimer = setInterval(() => {
+                repairTimeLeft--;
+                document.getElementById('repairTimer').textContent = repairTimeLeft;
+                
+                // Change color when time is running out
+                const timerEl = document.getElementById('repairTimer');
+                if (repairTimeLeft <= 5) {
+                    timerEl.style.color = '#ff0055';
+                } else if (repairTimeLeft <= 10) {
+                    timerEl.style.color = '#ffaa00';
+                } else {
+                    timerEl.style.color = '#00ff88';
+                }
+                
+                if (repairTimeLeft <= 0) {
+                    clearInterval(repairTimer);
+                    failedRepair();
+                }
+            }, 1000);
+        }
+        
+        function attemptFix(bugType) {
+            if (!repairGameActive || currentBugs.length === 0) return;
+            
+            const robot = document.getElementById('bugRobot');
+            
+            if (currentBugs.includes(bugType)) {
+                // CORRECT FIX!
+                currentBugs = currentBugs.filter(b => b !== bugType);
+                
+                // Remove this bug's animation
+                const remainingAnimations = currentBugs.map(b => bugTypes[b].animation).join(', ');
+                robot.style.animation = remainingAnimations || '';
+                
+                // Flash green feedback
+                robot.style.filter = 'drop-shadow(0 0 30px rgba(0, 255, 136, 0.8))';
+                setTimeout(() => {
+                    robot.style.filter = '';
+                }, 300);
+                
+                // Play success sound
+                playSound(800, 0.1);
+                
+                if (currentBugs.length === 0) {
+                    // ALL BUGS FIXED!
+                    clearInterval(repairTimer);
+                    successfulRepair();
+                } else {
+                    // Some bugs remain
+                    document.getElementById('bugStatus').innerHTML = `✅ <strong>1 BUG RÉPARÉ !</strong><br>Il reste ${currentBugs.length} bug(s) à réparer !`;
+                    document.getElementById('bugStatus').style.color = '#00ff88';
+                }
+            } else {
+                // WRONG FIX!
+                wrongRepair(bugType);
+            }
+        }
+        
+        function successfulRepair() {
+            const robot = document.getElementById('bugRobot');
+            
+            // Stop all animations
+            robot.style.animation = '';
+            robot.style.transform = '';
+            robot.style.filter = '';
+            
+            // Success animation
+            robot.innerHTML = '✅';
+            robot.style.transform = 'scale(1.3)';
+            robot.style.filter = 'drop-shadow(0 0 30px rgba(0, 255, 136, 0.8))';
+            
+            // Calculate points (faster = more points)
+            const basePoints = 150;
+            const timeBonus = repairTimeLeft * 15;
+            const levelBonus = repairLevel * 50;
+            const totalPoints = basePoints + timeBonus + levelBonus;
+            
+            repairScore += totalPoints;
+            
+            document.getElementById('repairScore').textContent = repairScore;
+            document.getElementById('bugStatus').innerHTML = `✅ <strong>NIVEAU ${repairLevel} TERMINÉ !</strong><br>+${totalPoints} points<br>(⚡ Bonus temps: +${timeBonus} | 📊 Bonus niveau: +${levelBonus})`;
+            document.getElementById('bugStatus').style.color = '#00ff88';
+            
+            // Level up
+            repairLevel++;
+            document.getElementById('repairLevel').textContent = repairLevel;
+            
+            if (repairLevel <= 6) {
+                showLevelUp();
+            }
+            
+            setTimeout(() => {
+                robot.innerHTML = '🤖';
+                robot.style.transform = '';
+                robot.style.filter = '';
+                nextBug();
+            }, 3000);
+        }
+        
+        function wrongRepair(wrongBugType) {
+            const robot = document.getElementById('bugRobot');
+            
+            // Keep bugs running + add red flash
+            robot.style.filter = 'drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))';
+            
+            // Play error sound
+            playSound(150, 0.2);
+            
+            document.getElementById('bugStatus').innerHTML = `❌ <strong>MAUVAIS DIAGNOSTIC !</strong><br>"${bugTypes[wrongBugType].name}" n'est pas actif !<br>Les bugs continuent... -50 points`;
+            document.getElementById('bugStatus').style.color = '#ff0055';
+            
+            // Lose points
+            repairScore = Math.max(0, repairScore - 50);
+            document.getElementById('repairScore').textContent = repairScore;
+            
+            setTimeout(() => {
+                robot.style.filter = '';
+                // Show current bugs again
+                let statusText = `⚠️ <strong>ALERTE NIVEAU ${repairLevel}</strong><br>`;
+                currentBugs.forEach(bug => {
+                    statusText += `${bugTypes[bug].description}<br>`;
+                });
+                document.getElementById('bugStatus').innerHTML = statusText;
+                document.getElementById('bugStatus').style.color = '#ff0055';
+            }, 1500);
+        }
+        
+        function failedRepair() {
+            const robot = document.getElementById('bugRobot');
+            
+            robot.style.animation = '';
+            robot.style.transform = '';
+            robot.style.filter = '';
+            robot.innerHTML = '💥';
+            
+            let bugsText = currentBugs.map(b => bugTypes[b].name).join(', ');
+            
+            document.getElementById('bugStatus').innerHTML = `⏰ <strong>TEMPS ÉCOULÉ !</strong><br>C'était : ${bugsText}<br><br>🎯 Score final: ${repairScore} points<br>📊 Niveau atteint: ${repairLevel}/6`;
+            document.getElementById('bugStatus').style.color = '#ff0055';
+            
+            repairGameActive = false;
+            enableRepairButtons(false);
+            
+            document.getElementById('repairStartBtn').style.display = 'block';
+            document.getElementById('repairStartBtn').textContent = 'REJOUER';
+            
+            setTimeout(() => {
+                robot.innerHTML = '🤖';
+            }, 2000);
+        }
+        
+        function endRepairGame() {
+            const robot = document.getElementById('bugRobot');
+            
+            robot.style.animation = '';
+            robot.style.transform = '';
+            robot.style.filter = '';
+            robot.innerHTML = '🏆';
+            robot.style.transform = 'scale(1.5)';
+            robot.style.filter = 'drop-shadow(0 0 40px rgba(255, 215, 0, 0.9))';
+            
+            let rank = '';
+            let emoji = '';
+            
+            if (repairScore >= 2500) {
+                rank = 'TECHNICIEN LÉGENDAIRE';
+                emoji = '🏆';
+            } else if (repairScore >= 2000) {
+                rank = 'EXPERT EN RÉPARATION';
+                emoji = '⭐';
+            } else if (repairScore >= 1500) {
+                rank = 'RÉPARATEUR COMPÉTENT';
+                emoji = '🎖️';
+            } else if (repairScore >= 1000) {
+                rank = 'APPRENTI TECHNICIEN';
+                emoji = '🎯';
+            } else {
+                rank = 'DÉBUTANT COURAGEUX';
+                emoji = '💪';
+            }
+            
+            document.getElementById('bugStatus').innerHTML = `
+                ${emoji} <strong>${rank}</strong> ${emoji}<br><br>
+                🎉 <strong>TOUS LES NIVEAUX TERMINÉS !</strong><br><br>
+                📊 SCORE FINAL : ${repairScore} points<br>
+                ✅ 6 NIVEAUX COMPLÉTÉS<br>
+                🔧 Tous les bugs réparés !<br><br>
+                ${repairScore >= 2000 ? '🌟 PERFORMANCE EXCEPTIONNELLE !' : 'Rejoue pour améliorer ton score !'}
+            `;
+            document.getElementById('bugStatus').style.color = '#FFD700';
+            
+            repairGameActive = false;
+            enableRepairButtons(false);
+            
+            document.getElementById('repairStartBtn').style.display = 'block';
+            document.getElementById('repairStartBtn').textContent = '🔄 REJOUER POUR BATTRE TON SCORE';
+        }
+        
+        function showLevelUp() {
+            const feedback = document.createElement('div');
+            feedback.style.position = 'fixed';
+            feedback.style.top = '50%';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translate(-50%, -50%)';
+            feedback.style.fontSize = '4em';
+            feedback.style.fontWeight = 'bold';
+            feedback.style.color = '#00f5ff';
+            feedback.style.zIndex = '3000';
+            feedback.style.textShadow = '0 0 30px #00f5ff';
+            feedback.style.animation = 'pulse 1s';
+            
+            let levelText = `⬆️ NIVEAU ${repairLevel} !`;
+            if (repairLevel === 4) levelText += '<br><span style="font-size: 0.5em;">2 BUGS SIMULTANÉS !</span>';
+            if (repairLevel === 6) levelText += '<br><span style="font-size: 0.5em;">3 BUGS - BOSS FINAL !</span>';
+            
+            feedback.innerHTML = levelText;
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 2500);
+        }
+        
+        function enableRepairButtons(enabled) {
+            const buttons = document.querySelectorAll('.bug-btn');
+            buttons.forEach(btn => {
+                btn.disabled = !enabled;
+                btn.style.opacity = enabled ? '1' : '0.5';
+                btn.style.pointerEvents = enabled ? 'auto' : 'none';
+            });
+        }
+        
+        // Deprecated functions - keeping for compatibility
+        function applyBug(bugType) {}
+        function resetBug() {}
+        
+        // Modal management
+        function openGame(gameId) {
+            document.getElementById(gameId).style.display = 'block';
+            if (gameId === 'game4') {
+                startStoryGame();
+            }
+        }
+        
+        function closeGame(gameId) {
+            document.getElementById(gameId).style.display = 'none';
+        }
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
